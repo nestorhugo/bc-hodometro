@@ -6,3 +6,5 @@ export const DIVISION_ITEMS = [
   { value: 55, title: "Ácido" },
   { value: 58, title: "Treinamento" },
 ];
+
+export const FILTER_KEY = "filter";

@@ -1,3 +1,4 @@
+import { FILTER_KEY } from "@/constants/filterConstants";
 import apiCall, { type ApiResponse } from "@/functions/apiCall";
 import {
   setDateToYesterday,
@@ -8,20 +9,24 @@ import type { FilterData } from "@/types/Filter";
 import type { Vehicle } from "@/types/Vehicle";
 import { defineStore } from "pinia";
 
+const filterLocalData: FilterData = JSON.parse(
+  window.localStorage.getItem(FILTER_KEY)
+);
+
 export const useVehicleTrackerStore = defineStore("vehicle", () => {
   const vehiclesData = ref<ApiResponse<Vehicle>>();
 
   const filterData = reactive<FilterData>({
-    startDate: setDateToYesterday(new Date()),
-    endDate: new Date(),
-    idTms: [],
-    licensePlates: [],
-    divisionIds: [],
+    startDate: filterLocalData?.startDate ?? setDateToYesterday(new Date()),
+    endDate: filterLocalData?.endDate ?? new Date(),
+    idTms: filterLocalData?.idTms ?? [],
+    licensePlates: filterLocalData?.licensePlates ?? [],
+    divisionIds: filterLocalData?.divisionIds ?? [],
     pagination: {
-      itemsPerPage: 10,
-      totalPages: 0,
-      pageActive: 1,
-      totalItems: 0,
+      itemsPerPage: filterLocalData?.pagination.itemsPerPage ?? 10,
+      totalPages: filterLocalData?.pagination.totalPages ?? 0,
+      pageActive: filterLocalData?.pagination.pageActive ?? 1,
+      totalItems: filterLocalData?.pagination.totalItems ?? 0,
     },
   });
 
@@ -44,6 +49,8 @@ export const useVehicleTrackerStore = defineStore("vehicle", () => {
       filterData.pagination.totalItems = res.totalItems;
       filterData.pagination.totalPages = res.totalPages;
       filterData.pagination.pageActive = res.pageActive;
+
+      window.localStorage.setItem(FILTER_KEY, JSON.stringify(filterData));
       return res;
     });
   }
