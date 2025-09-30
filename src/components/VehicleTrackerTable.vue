@@ -1,16 +1,17 @@
 <template>
   <v-data-table-server
-    v-model:items-per-page="itemsPerPage"
+    v-model:items-per-page="pagination.itemsPerPage"
+    :items-per-page-options="itemsPerPageOptions"
     :headers="headers"
     :items="
       Array.isArray(vehicleTrackerStore.vehiclesData?.data)
         ? vehicleTrackerStore.vehiclesData.data
         : []
     "
-    :items-length="totalItems"
+    :items-length="pagination.totalItems"
     :loading="isLoadingVehicles"
-    item-value="name"
     @update:options="updateOptions"
+    disable-sort
   />
 
   <v-snackbar color="error" variant="tonal" :timeout="-1" v-model="tryAgain">
@@ -38,26 +39,34 @@ import { ref } from "vue";
 
 const vehicleTrackerStore = useVehicleTrackerStore();
 const isLoadingVehicles = ref(false);
-const itemsPerPage = ref(10);
-const totalItems = ref(0);
+
+const pagination = reactive({
+  itemsPerPage: 10,
+  totalPages: 0,
+  pageActive: 1,
+  totalItems: 0,
+});
+
 const tryAgain = ref(false);
 
-const headers = ref([
-  { title: "Frota", key: "vehicleId" as const },
-  { title: "Operação", key: "operationName" as const },
-  { title: "Divisão", key: "divisionName" as const },
-  { title: "Placa", key: "licensePlate" as const },
-  { title: "Hodômetro", key: "odometerKm" as const },
-  { title: "Velocidade", key: "speed" as const },
-  { title: "Status Veículo", key: "moving" as const },
-  { title: "Status Ignição", key: "ignitionStatus" as const },
-  { title: "Motorista", key: "driverName" as const },
-  { title: "Data Processamento", key: "dateProcess" as const },
-]);
+const itemsPerPageOptions = [
+  { value: 10, title: "10" },
+  { value: 15, title: "15" },
+  { value: 20, title: "20" },
+];
 
-onMounted(() => {
-  getVehiclesData();
-});
+const headers = [
+  { title: "Frota", key: "vehicleIdTms" },
+  { title: "Operação", key: "operationName" },
+  { title: "Divisão", key: "divisionName" },
+  { title: "Placa", key: "licensePlate" },
+  { title: "Hodômetro", key: "odometerKm" },
+  { title: "Velocidade", key: "speed" },
+  { title: "Status Veículo", key: "moving" },
+  { title: "Status Ignição", key: "ignitionStatus" },
+  { title: "Motorista", key: "driverName" },
+  { title: "Data Processamento", key: "dateProcess" },
+];
 
 function getVehiclesData() {
   isLoadingVehicles.value = true;
@@ -66,17 +75,23 @@ function getVehiclesData() {
     .getVehiclesData({
       startDate: "2025-10-20T20:00Z",
       endDate: "2025-10-29T20:00Z",
-      page: 1,
-      rows: 10,
+      page: pagination.pageActive,
+      rows: pagination.itemsPerPage,
+      divisionId: [42, 46],
     })
     .then((res) => {
-      totalItems.value = res.totalItems;
+      pagination.totalItems = res.totalItems;
+      pagination.totalPages = res.totalPages;
+      pagination.pageActive = res.pageActive;
     })
     .catch(() => (tryAgain.value = true))
     .finally(() => (isLoadingVehicles.value = false));
 }
 
-function updateOptions(e: unknown) {
-  console.log(JSON.stringify(e));
+function updateOptions(e: { page: number; itemsPerPage: number }) {
+  pagination.itemsPerPage = e.itemsPerPage;
+  pagination.pageActive = e.page;
+
+  getVehiclesData();
 }
 </script>
