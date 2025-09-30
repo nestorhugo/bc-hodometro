@@ -37,6 +37,9 @@ function apiCall<T>({
     data: body,
     params: queries || undefined,
     headers: headers,
+    paramsSerializer: {
+      indexes: null,
+    },
   }).then((resp) => {
     return resp.data;
   });

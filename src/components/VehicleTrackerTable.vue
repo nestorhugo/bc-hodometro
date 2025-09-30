@@ -1,16 +1,41 @@
 <template>
+  <div class="d-flex align-center justify-space-between py-2">
+    <div class="d-flex align-center">
+      <p>Consulta Hodômetro</p>
+      <v-btn
+        class="ml-2"
+        icon="mdi-filter"
+        size="x-small"
+        @click="isFilterOpen = true"
+      />
+    </div>
+
+    <v-btn icon="mdi-cog" size="x-small" />
+  </div>
+
+  <v-dialog v-model="isFilterOpen" width="auto">
+    <vehicle-tracker-table-filter
+      @update-filter="
+        () => {
+          isFilterOpen = false;
+          getVehiclesData();
+        }
+      "
+    />
+  </v-dialog>
+
   <v-data-table-server
-    v-model:items-per-page="pagination.itemsPerPage"
+    v-model:items-per-page="vehicleStore.filterData.pagination.itemsPerPage"
     :items-per-page-options="itemsPerPageOptions"
     :headers="headers"
     :items="
-      Array.isArray(vehicleTrackerStore.vehiclesData?.data)
-        ? vehicleTrackerStore.vehiclesData.data
+      Array.isArray(vehicleStore.vehiclesData?.data)
+        ? vehicleStore.vehiclesData.data
         : []
     "
-    :items-length="pagination.totalItems"
+    :items-length="vehicleStore.filterData.pagination.totalItems"
     :loading="isLoadingVehicles"
-    @update:options="updateOptions"
+    @update:options="updatePagination"
     disable-sort
   />
 
@@ -37,15 +62,9 @@
 import { useVehicleTrackerStore } from "@/stores/vehicleTrackerStore";
 import { ref } from "vue";
 
-const vehicleTrackerStore = useVehicleTrackerStore();
+const vehicleStore = useVehicleTrackerStore();
 const isLoadingVehicles = ref(false);
-
-const pagination = reactive({
-  itemsPerPage: 10,
-  totalPages: 0,
-  pageActive: 1,
-  totalItems: 0,
-});
+const isFilterOpen = ref(false);
 
 const tryAgain = ref(false);
 
@@ -71,26 +90,15 @@ const headers = [
 function getVehiclesData() {
   isLoadingVehicles.value = true;
 
-  vehicleTrackerStore
-    .getVehiclesData({
-      startDate: "2025-10-20T20:00Z",
-      endDate: "2025-10-29T20:00Z",
-      page: pagination.pageActive,
-      rows: pagination.itemsPerPage,
-      divisionId: [42, 46],
-    })
-    .then((res) => {
-      pagination.totalItems = res.totalItems;
-      pagination.totalPages = res.totalPages;
-      pagination.pageActive = res.pageActive;
-    })
+  vehicleStore
+    .getVehiclesData()
     .catch(() => (tryAgain.value = true))
     .finally(() => (isLoadingVehicles.value = false));
 }
 
-function updateOptions(e: { page: number; itemsPerPage: number }) {
-  pagination.itemsPerPage = e.itemsPerPage;
-  pagination.pageActive = e.page;
+function updatePagination(e: { page: number; itemsPerPage: number }) {
+  vehicleStore.filterData.pagination.itemsPerPage = e.itemsPerPage;
+  vehicleStore.filterData.pagination.pageActive = e.page;
 
   getVehiclesData();
 }
