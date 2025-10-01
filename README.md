@@ -1,27 +1,49 @@
 # bc-hodometro
 
-## 💿 Install
+Este projeto foi desenvolvido utilizando
 
-Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
+- Vue 3;
+- TypeScript;
+- Vuetify;
+- Pinia;
+- Vite;
+- Axios.
 
-| Package Manager                             | Command        |
-| ------------------------------------------- | -------------- |
-| [yarn](https://yarnpkg.com/getting-started) | `yarn install` |
+É necessário **Node >= 22.20.0** e **Yarn** para rodar.
 
-## 💡 Usage
+Para instalar o node, é recomendado o uso do NVM, você pode encontrar a documentação e download [neste link](https://nodejs.org/en/download).
+Para instalar e habilitar o gerenciador de pacotes yarn você pode acessar [aqui](https://yarnpkg.com/getting-started/install).
 
-This section covers how to start the development server and build your project for production.
+## Como executar
 
-### Starting the Development Server
+Instalar dependências
 
-To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
+```bash
+yarn install
+```
+
+Copiar variáveis de ambiente
+
+```bash
+cp .env.example .env
+```
+
+> edite o arquivo .env com seus dados reais
+
+Rodar em desenvolvimento
 
 ```bash
 yarn dev
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+Gerar build de produção
 
-## 📑 License
+```bash
+yarn build
+```
 
-[MIT](http://opensource.org/licenses/MIT)
+Pré-visualizar build
+
+```bash
+yarn preview
+```
