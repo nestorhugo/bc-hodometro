@@ -36,7 +36,7 @@ export interface PointCoordinates {
   longitude: number;
 }
 
-export interface FilterHeaders {
+export interface FilterHeader {
   title: string;
   key: string;
 }

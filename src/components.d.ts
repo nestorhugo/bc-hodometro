@@ -10,8 +10,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    VehicleTrackerTable: typeof import('./components/VehicleTrackerTable.vue')['default']
-    VehicleTrackerTableFilter: typeof import('./components/VehicleTrackerTableFilter.vue')['default']
-    VehicleTrackerTableHeadersConfig: typeof import('./components/VehicleTrackerTableHeadersConfig.vue')['default']
+    VehicleTable: typeof import('./components/Vehicle/VehicleTable.vue')['default']
+    VehicleTableFilter: typeof import('./components/Vehicle/VehicleTableFilter.vue')['default']
+    VehicleTableHeadersConfig: typeof import('./components/Vehicle/VehicleTableHeadersConfig.vue')['default']
   }
 }

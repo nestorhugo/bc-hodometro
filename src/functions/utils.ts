@@ -1,6 +1,6 @@
 import { FILTER_HEADERS_KEY, FILTER_KEY } from "@/constants/filterConstants";
 import type { FilterData } from "@/types/Filter";
-import type { FilterHeaders } from "@/types/Vehicle";
+import type { FilterHeader } from "@/types/Vehicle";
 
 export function setStartOfDay(d: Date): Date {
   const date = new Date(d);
@@ -64,7 +64,7 @@ export function defaultFilterHeaders() {
   ];
 }
 
-export function loadFilterHeaders(): FilterHeaders[] {
+export function loadFilterHeaders(): FilterHeader[] {
   const raw = localStorage.getItem(FILTER_HEADERS_KEY);
   if (!raw) return defaultFilterHeaders();
 

@@ -14,7 +14,7 @@
   </div>
 
   <v-dialog v-model="isConfigOpen" width="auto">
-    <vehicle-tracker-table-headers-config
+    <vehicle-table-headers-config
       @update-config="
         () => {
           isConfigOpen = false;
@@ -25,7 +25,7 @@
   </v-dialog>
 
   <v-dialog v-model="isFilterOpen" width="auto">
-    <vehicle-tracker-table-filter
+    <vehicle-table-filter
       @update-filter="
         () => {
           isFilterOpen = false;
