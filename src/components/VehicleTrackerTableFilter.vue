@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { DIVISION_ITEMS, FILTER_KEY } from "@/constants/filterConstants";
-import { setDateToYesterday } from "@/functions/utils";
+import { loadFilterData } from "@/functions/utils";
 import { validateNotEmpty } from "@/functions/validationRules";
 import { useVehicleTrackerStore } from "@/stores/vehicleTrackerStore";
 import { type FilterData } from "@/types/Filter";
@@ -62,19 +62,7 @@ import type { SubmitEventPromise } from "vuetify";
 const vehicleStore = useVehicleTrackerStore();
 const emit = defineEmits(["update-filter"]);
 
-const filterLocalData: FilterData = JSON.parse(
-  window.localStorage.getItem(FILTER_KEY) ?? ""
-);
-
-const now = new Date();
-
-const filterForm = reactive({
-  startDate: new Date(filterLocalData?.startDate) ?? setDateToYesterday(now),
-  endDate: new Date(filterLocalData?.endDate) ?? now,
-  idTms: filterLocalData?.idTms ?? [],
-  divisionIds: filterLocalData?.divisionIds ?? [],
-  licensePlates: filterLocalData?.licensePlates ?? [],
-});
+const filterForm = reactive<FilterData>(loadFilterData());
 
 async function submit(event: SubmitEventPromise) {
   const results = await event;
