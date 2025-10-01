@@ -1,5 +1,6 @@
-import { FILTER_KEY } from "@/constants/filterConstants";
+import { FILTER_HEADERS_KEY, FILTER_KEY } from "@/constants/filterConstants";
 import type { FilterData } from "@/types/Filter";
+import type { FilterHeaders } from "@/types/Vehicle";
 
 export function setStartOfDay(d: Date): Date {
   const date = new Date(d);
@@ -46,4 +47,26 @@ export function loadFilterData(): FilterData {
     startDate: new Date(parsed.startDate),
     endDate: new Date(parsed.endDate),
   };
+}
+
+export function defaultFilterHeaders() {
+  return [
+    { title: "Frota", key: "vehicleIdTms" },
+    { title: "Operação", key: "operationName" },
+    { title: "Divisão", key: "divisionName" },
+    { title: "Placa", key: "licensePlate" },
+    { title: "Hodômetro", key: "odometerKm" },
+    { title: "Velocidade", key: "speed" },
+    { title: "Status Veículo", key: "moving" },
+    { title: "Status Ignição", key: "ignitionStatus" },
+    { title: "Motorista", key: "driverName" },
+    { title: "Data Processamento", key: "dateProcess" },
+  ];
+}
+
+export function loadFilterHeaders(): FilterHeaders[] {
+  const raw = localStorage.getItem(FILTER_HEADERS_KEY);
+  if (!raw) return defaultFilterHeaders();
+
+  return JSON.parse(raw);
 }

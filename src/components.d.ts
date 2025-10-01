@@ -12,5 +12,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     VehicleTrackerTable: typeof import('./components/VehicleTrackerTable.vue')['default']
     VehicleTrackerTableFilter: typeof import('./components/VehicleTrackerTableFilter.vue')['default']
+    VehicleTrackerTableHeadersConfig: typeof import('./components/VehicleTrackerTableHeadersConfig.vue')['default']
   }
 }

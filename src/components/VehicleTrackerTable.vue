@@ -10,8 +10,19 @@
       />
     </div>
 
-    <v-btn icon="mdi-cog" size="x-small" />
+    <v-btn icon="mdi-cog" size="x-small" @click="isConfigOpen = true" />
   </div>
+
+  <v-dialog v-model="isConfigOpen" width="auto">
+    <vehicle-tracker-table-headers-config
+      @update-config="
+        () => {
+          isConfigOpen = false;
+          updateTableHeaders();
+        }
+      "
+    />
+  </v-dialog>
 
   <v-dialog v-model="isFilterOpen" width="auto">
     <vehicle-tracker-table-filter
@@ -59,32 +70,21 @@
 </template>
 
 <script setup lang="ts">
+import { loadFilterHeaders } from "@/functions/utils";
 import { useVehicleTrackerStore } from "@/stores/vehicleTrackerStore";
 import { ref } from "vue";
 
 const vehicleStore = useVehicleTrackerStore();
 const isLoadingVehicles = ref(false);
 const isFilterOpen = ref(false);
-
+const isConfigOpen = ref(false);
 const tryAgain = ref(false);
+const headers = ref(loadFilterHeaders());
 
 const itemsPerPageOptions = [
   { value: 10, title: "10" },
   { value: 15, title: "15" },
   { value: 20, title: "20" },
-];
-
-const headers = [
-  { title: "Frota", key: "vehicleIdTms" },
-  { title: "Operação", key: "operationName" },
-  { title: "Divisão", key: "divisionName" },
-  { title: "Placa", key: "licensePlate" },
-  { title: "Hodômetro", key: "odometerKm" },
-  { title: "Velocidade", key: "speed" },
-  { title: "Status Veículo", key: "moving" },
-  { title: "Status Ignição", key: "ignitionStatus" },
-  { title: "Motorista", key: "driverName" },
-  { title: "Data Processamento", key: "dateProcess" },
 ];
 
 function getVehiclesData() {
@@ -101,5 +101,9 @@ function updatePagination(e: { page: number; itemsPerPage: number }) {
   vehicleStore.filterData.pagination.pageActive = e.page;
 
   getVehiclesData();
+}
+
+function updateTableHeaders() {
+  headers.value = loadFilterHeaders();
 }
 </script>

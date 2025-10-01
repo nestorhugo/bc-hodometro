@@ -1,5 +1,5 @@
 <template>
-  <v-card width="50vw" prepend-icon="mdi-filter" title="Filtro">
+  <v-card width="60vw" prepend-icon="mdi-filter" title="Filtro">
     <div class="pa-2">
       <v-form @submit.prevent="submit" validate-on="submit">
         <h3 class="pb-2">Intervalo de data</h3>
