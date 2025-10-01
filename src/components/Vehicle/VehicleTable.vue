@@ -37,7 +37,7 @@
 
   <v-data-table-server
     v-model:items-per-page="vehicleStore.filterData.pagination.itemsPerPage"
-    :items-per-page-options="itemsPerPageOptions"
+    :items-per-page-options="ITEMS_PER_PAGE_OPTIONS"
     :headers="headers"
     :items="
       Array.isArray(vehicleStore.vehiclesData?.data)
@@ -92,6 +92,7 @@
 </template>
 
 <script setup lang="ts">
+import { ITEMS_PER_PAGE_OPTIONS } from "@/constants/filterConstants";
 import { loadFilterHeaders } from "@/functions/utils";
 import { useVehicleTrackerStore } from "@/stores/vehicleTrackerStore";
 import { ref } from "vue";
@@ -102,12 +103,6 @@ const isFilterOpen = ref(false);
 const isConfigOpen = ref(false);
 const tryAgain = ref(false);
 const headers = ref(loadFilterHeaders());
-
-const itemsPerPageOptions = [
-  { value: 10, title: "10" },
-  { value: 15, title: "15" },
-  { value: 20, title: "20" },
-];
 
 function getVehiclesData() {
   isLoadingVehicles.value = true;

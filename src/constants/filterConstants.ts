@@ -41,3 +41,9 @@ export const FILTER_HEADERS = [
   { title: "Velocidade", key: "speed" },
   { title: "Qualidade", key: "quality" },
 ];
+
+export const ITEMS_PER_PAGE_OPTIONS = [
+  { value: 10, title: "10" },
+  { value: 15, title: "15" },
+  { value: 20, title: "20" },
+];
