@@ -13,5 +13,6 @@ declare module 'vue' {
     VehicleTable: typeof import('./components/Vehicle/VehicleTable.vue')['default']
     VehicleTableFilter: typeof import('./components/Vehicle/VehicleTableFilter.vue')['default']
     VehicleTableHeadersConfig: typeof import('./components/Vehicle/VehicleTableHeadersConfig.vue')['default']
+    VehicleTableHeadersOrder: typeof import('./components/Vehicle/VehicleTableHeadersOrder.vue')['default']
   }
 }
