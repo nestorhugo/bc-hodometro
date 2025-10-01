@@ -48,7 +48,28 @@
     :loading="isLoadingVehicles"
     @update:options="updatePagination"
     disable-sort
-  />
+  >
+    <template v-slot:item.dateProcess="{ value }">
+      {{ new Date(value).toLocaleString("pt-BR") }}
+    </template>
+
+    <template v-slot:item.moving="{ value }">
+      {{ value ? "Movimento" : "Parado" }}
+    </template>
+
+    <template v-slot:item.odometer="{ value }"> {{ value }} m </template>
+    <template v-slot:item.odometerKm="{ value }"> {{ value }} Km </template>
+    <template v-slot:item.point="{ value }">
+      <p>Latitude: {{ value.latitude }}</p>
+      <p>Longitude: {{ value.longitude }}</p>
+    </template>
+    <template v-slot:item.delayed="{ value }">
+      {{ value ? "Sim" : "Não" }}</template
+    >
+    <template v-slot:item.ignition="{ value }">
+      {{ value ? "Sim" : "Não" }}</template
+    >
+  </v-data-table-server>
 
   <v-snackbar color="error" variant="tonal" :timeout="-1" v-model="tryAgain">
     Não foi possível recuperar os dados
