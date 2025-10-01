@@ -47,6 +47,7 @@
     :items-length="vehicleStore.filterData.pagination.totalItems"
     :loading="isLoadingVehicles"
     @update:options="updatePagination"
+    mobile-breakpoint="sm"
     disable-sort
   >
     <template v-slot:item.dateProcess="{ value }">
